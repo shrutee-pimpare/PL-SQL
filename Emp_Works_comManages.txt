@@ -1,0 +1,61 @@
+Q.2
+1. employee (employee name, street, city) ,employee name is primary key 
+2. works (employee name, company name, salary)
+ 3. company (company name, city) ,company name is primary key
+ 4. manages (employee name, manager name)
+create table employee(employeename varchar(20) primary key,street varchar(20),city varchar(20));
+insert into employee(employeename, street,city) values ('Neha','A street','A city');
+insert into employee(employeename, street,city) values ('Reesha','B street','B city');
+insert into employee(employeename, street,city) values ('Ritika','C street','C city');
+insert into employee(employeename, street,city) values ('Ritu','C street','C city');
+insert into employee(employeename, street,city) values ('Ryan','A street','A city');
+insert into employee(employeename, street,city) values ('Kelly','B street','B city');
+
+create table company(companyname varchar(20) primary key,city varchar(20));
+insert into company (companyname , city)values ('First Bank Corporation','A city');
+insert into company (companyname , city)values('Small Bank Corporation','B city');
+insert into company (companyname , city)values('No Bank Corporation','C city');
+insert into company (companyname , city)values('Yes Bank Corporation','A city');
+insert into company (companyname , city)values('More Bank Corporation','B city');
+
+create table works(employeename varchar(20),companyname varchar(20),salary double);
+insert into works (employeename,companyname, salary)values('Neha','First Bank Corporation',40000);
+insert into works (employeename,companyname, salary)values('Reesha','Small Bank Corporation',30000);
+insert into works (employeename,companyname, salary)values('Ritika','No Bank Corporation',35000);
+insert into works (employeename,companyname, salary)values('Ritu','Small Bank Corporation',25000);
+insert into works (employeename,companyname, salary)values('Ryan','First Bank Corporation',15000);
+insert into works (employeename,companyname, salary)values('Kelly','First Bank Corporation',10000);
+
+create table manages(employeename varchar(20),managername varchar(20));
+insert into manages (employeename,managername )values ('Neha','Ryan');
+insert into manages (employeename,managername )values('Neha','Kelly');
+insert into manages (employeename,managername )values('Reesha','Ritu');
+
+Give an expression in SQL for each of the following queries.
+ 1. Find the names of all employees who work for First Bank Corporation. 
+select employeename from works where companyname='First Bank Corporation';
+2. Find all employees who do not work for First Bank Coorporation 
+select employeename from works where companyname<>'First Bank Corporation';
+3. Find the company that has most employees. 
+
+select count(employee_name) as cnt, company_name
+ from works 
+ group by company_name
+ order by cnt desc limit 1;
+
+4. Find all companies located in every in which small bank corporation is located
+select company_name, city 
+ from company where city in (select city from company where company_name ='qaz');
+
+5. Find details of employee having salary greater than 10,000.
+select * from works where salary>10000;
+6. Update salary of all employees who work for First Bank Corporation by 10%. 
+update works set salary=salary+10 where companyname ='First Bank Corporation';
+select * from works;
+7. Find employee and their managers.
+Select * from manages;
+8. Find the names, street and cities of all employees who work for First Bank Corporation and earn more than 10,000. 
+select e.employeename,e.street,e.city from employee e, works w where e.employeename = w.employeename and companyname="First Bank Corporation" and salary > 10000 ;
+
+9. Find those companies whose employees earn a higher salary,on average, than the average salary at First Bank Corporation
+select AVG(salary) from works where companyname='First Bank Corporation';
